@@ -108,3 +108,15 @@ npm test
 ```
 
 See [SITE_AUDIT.md](./SITE_AUDIT.md) for what was verified, what remains a local/demo feature, and the production release checks that still need live browser and service testing. The standard map layer uses OpenStreetMap without a key; light/dark are client-side styles, and satellite imagery uses Esri with attribution. Follow the [OSM tile usage policy](https://operations.osmfoundation.org/policies/tiles/) and choose a contracted/self-hosted tile service for production traffic.
+
+## Deploy to Render
+
+This repository includes a Render-ready Node server and Blueprint (`render.yaml`). In Render, create a Blueprint from this repository or create a Node Web Service with:
+
+- Build command: `npm install && npm run build`
+- Start command: `npm start`
+- Health check path: `/healthz`
+- Root directory: repository root (leave blank)
+- Region: Frankfurt; Free plan is supported for the frontend demo.
+
+Add `GROQ_API_KEY` as a **server-side** Render environment variable to enable AI Copilot. `GROQ_MODEL` defaults to `openai/gpt-oss-120b`. Never add the key as a `VITE_` variable or commit it to Git. The Node server serves the Vite production build and routes `/api/chat` to the existing Groq handler. The Vite development middleware remains available for local development.
